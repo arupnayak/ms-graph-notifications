@@ -22,6 +22,21 @@ app.post("/notifications", (req, res) => {
     }
 );
 
+app.post("/event-grid-notifications", (req, res) => {
+  const events = req.body;
+  const validationEvent = events.find((e) => e.eventType === 'Microsoft.EventGrid.SubscriptionValidationEvent')
+
+  const {validationCode} = validationEvent?.data || {};
+
+  // console.log({validationToken});
+  console.log(JSON.stringify(req.body));
+
+  // res content type of text/plain.
+  res.setHeader("Content-Type", "text/plain");
+  res.status(200).send({validationResponse: validationCode});
+  }
+);
+
 const PORT = 5000;
 
 app.listen(PORT, () => {
